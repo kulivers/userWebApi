@@ -1,9 +1,15 @@
 import * as React from 'react';
 
+enum Education {
+    High = "High",
+    Partly = "Partly",
+    Middle = "Middle"
+};
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { name: '', isMale: true, education: 'High', hasCar: false, message: '' };
+        this.state = { name: '', isMale: true, education: Education.High, hasCar: false, message: '' };
     }
 
     handleChange = (event) => {
@@ -46,12 +52,12 @@ class Home extends React.Component {
                     <select name="education"
                         value={this.state.education}
                         onChange={this.handleChange}>
-                        <option value="High">Высшее</option>
-                        <option value="Partly">Незаконченное высшее</option>
-                        <option value="Middle">Среднее полное</option>
+                        <option value={Education.High}>Высшее</option>
+                        <option value={Education.Partly}>Незаконченное высшее</option>
+                        <option value={Education.Middle}>Среднее полное</option>
                     </select>
                     <h3>  Наличие авто:<br /></h3>
-                    <input type="CHECKBOX" name="hasCar" isSelected={this.state.hasCar} value={this.state.hasCar ? "true" : "false"} onCheckboxChange={this.handleBoolChange} />
+                    <input type="CHECKBOX" name="hasCar" checked={this.state.hasCar} value={this.state.hasCar ? "true" : "false"} onChange={this.handleBoolChange} />
 
                     <div><p>
                         <input type="submit" value="Отправить" />

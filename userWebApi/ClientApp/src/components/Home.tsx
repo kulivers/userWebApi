@@ -11,20 +11,21 @@ class Home extends React.Component {
     }
 
     handleBoolChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value !== "0" });
+        this.setState({ [event.target.name]: event.target.value !== "false" });
     }
 
     handleSubmit = (event) => {
         var that = this;
         fetch('api/UserRegister', {
-            method: 'GET',
+            method: 'POST',
             headers: {'Content-Type': 'application/json'},
             // We convert the React state to JSON and send it as the POST body
-            //body: JSON.stringify(this.state)
+            body: JSON.stringify(this.state)
         }).then(function (response) {
             console.log(response);
-            response.text().then(function (text) {
-                that.setState({ message: !response.ok ? `status: ${response.statusText}` : text });    
+            response.json().then(function (json)
+            {
+                that.setState({ message: !response.ok ? `status: ${response.statusText}` : json.messages.join('<br>') });    
             });
         });
 
@@ -39,10 +40,10 @@ class Home extends React.Component {
                     <h2> Введите фамилию, имя:<br /></h2>
                     <input type='text' name='name' value={this.state.name} onChange={this.handleChange} /><br />
                     <h3> Укажите пол:<br /></h3>
-                    <input type="RADIO" checked={this.state.isMale} name="isMale" value="1" onChange={this.handleBoolChange} /> Мужской<br />
-                    <input type="RADIO" checked={!this.state.isMale} name="isMale" value="0" onChange={this.handleBoolChange}/> Женский
+                    <input type="RADIO" checked={this.state.isMale} name="isMale" value="true" onChange={this.handleBoolChange} /> Мужской<br />
+                    <input type="RADIO" checked={!this.state.isMale} name="isMale" value="false" onChange={this.handleBoolChange}/> Женский
             <h3>  Укажите образование:<br /></h3>
-                    <select name="edu"
+                    <select name="education"
                         value={this.state.education}
                         onChange={this.handleChange}>
                         <option value="High">Высшее</option>
@@ -50,7 +51,7 @@ class Home extends React.Component {
                         <option value="Middle">Среднее полное</option>
                     </select>
                     <h3>  Наличие авто:<br /></h3>
-                    <input type="CHECKBOX" name="hasCar" checked={this.state.hasCar} value={this.state.hasCar} onChange={this.handleChange} />
+                    <input type="CHECKBOX" name="hasCar" isSelected={this.state.hasCar} value={this.state.hasCar ? "true" : "false"} onCheckboxChange={this.handleBoolChange} />
 
                     <div><p>
                         <input type="submit" value="Отправить" />

@@ -15,7 +15,6 @@ class Home extends React.Component {
     }
 
     handleSubmit = (event) => {
-
         var that = this;
         fetch('api/UserRegister', {
             method: 'GET',
@@ -24,7 +23,9 @@ class Home extends React.Component {
             //body: JSON.stringify(this.state)
         }).then(function (response) {
             console.log(response);
-            that.setState({ message: !response.ok ? `status: ${response.statusText}` : 'ok' });
+            response.text().then(function (text) {
+                that.setState({ message: !response.ok ? `status: ${response.statusText}` : text });    
+            });
         });
 
         event.preventDefault();
